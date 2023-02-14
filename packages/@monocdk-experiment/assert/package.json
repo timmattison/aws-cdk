@@ -35,7 +35,6 @@
   "devDependencies": {
     "@monocdk-experiment/rewrite-imports": "0.0.0",
     "@types/jest": "^27.5.2",
-    "@types/node": "^10.17.60",
     "@aws-cdk/cdk-build-tools": "0.0.0",
     "constructs": "^3.3.69",
     "jest": "^27.5.1",

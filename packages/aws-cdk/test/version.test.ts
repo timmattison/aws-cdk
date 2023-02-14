@@ -86,7 +86,7 @@ test('Skip version check if environment variable is set', async () => {
 });
 
 describe('version message', () => {
-  let previousIsTty: true | undefined;
+  let previousIsTty: boolean;
   beforeAll(() => {
     previousIsTty = process.stdout.isTTY;
     process.stdout.isTTY = true;

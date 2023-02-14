@@ -1,11 +1,11 @@
 import * as path from 'path';
 import { Writable, WritableOptions } from 'stream';
-import { StringDecoder, NodeStringDecoder } from 'string_decoder';
+import { StringDecoder } from 'string_decoder';
 import { diffTemplate, formatDifferences, ResourceDifference, ResourceImpact } from '@aws-cdk/cloudformation-diff';
-import { Diagnostic, DiagnosticReason, DestructiveChange, SnapshotVerificationOptions } from '../workers/common';
 import { canonicalizeTemplate } from './private/canonicalize-assets';
 import { AssemblyManifestReader } from './private/cloud-assembly';
 import { IntegRunnerOptions, IntegRunner, DEFAULT_SYNTH_OPTIONS } from './runner-base';
+import { Diagnostic, DiagnosticReason, DestructiveChange, SnapshotVerificationOptions } from '../workers/common';
 
 /**
  * Runner for snapshot tests. This handles orchestrating
@@ -234,7 +234,7 @@ export class IntegSnapshotRunner extends IntegRunner {
 
 class StringWritable extends Writable {
   public data: string;
-  private _decoder: NodeStringDecoder;
+  private _decoder: StringDecoder;
   constructor(options: WritableOptions) {
     super(options);
     this._decoder = new StringDecoder();
