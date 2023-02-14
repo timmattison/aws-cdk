@@ -1,5 +1,5 @@
 {
-  "lerna": "3.15.0",
+  "lerna": "^6.5.1",
   "npmClient": "yarn",
   "useWorkspaces": true,
   "packages": [
@@ -13,6 +13,7 @@
     "scripts/script-tests",
     "packages/individual-packages/*"
   ],
+  "useNx": true,
   "rejectCycles": "true",
   "version": "0.0.0"
 }

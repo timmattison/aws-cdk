@@ -7,6 +7,6 @@
     "test": "echo OK"
   },
   "devDependencies": {
-    "lerna": "^4.0.0"
+    "lerna": "^6.5.1"
   }
 }

@@ -1,9 +1,10 @@
 {
-  "lerna": "3.15.0",
+  "lerna": "^6.5.1",
   "npmClient": "yarn",
   "packages": [
     "*"
   ],
   "rejectCycles": "true",
-  "version": "independent"
+  "version": "independent",
+  "useNx": true
 }
