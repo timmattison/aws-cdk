@@ -80,7 +80,7 @@ fi
 
 echo "============================================================================================="
 echo "building..."
-time lerna run $bail --stream $runtarget || fail
+time lerna run $bail --stream $runtarget || fail --toposort
 
 if [ "$check_compat" == "true" ]; then
   /bin/bash scripts/check-api-compatibility.sh
