@@ -1,6 +1,11 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* istanbul ignore file */
 import * as https from 'https';
-import { SDK as AWS } from '@aws-cdk/core';
+import * as AWS from 'aws-sdk';
+
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+require('aws-sdk/lib/maintenance_mode_message').suppress = true;
+
 
 const FRAMEWORK_HANDLER_TIMEOUT = 900000; // 15 minutes
 
