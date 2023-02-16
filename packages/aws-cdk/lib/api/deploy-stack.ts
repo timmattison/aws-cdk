@@ -1,25 +1,25 @@
 import * as cxapi from '@aws-cdk/cx-api';
-import type { CloudFormation } from 'aws-sdk';
 import * as chalk from 'chalk';
 import * as fs from 'fs-extra';
 import * as uuid from 'uuid';
-import { addMetadataAssetsToManifest } from '../assets';
-import { Tag } from '../cdk-toolkit';
-import { debug, error, print } from '../logging';
-import { toYAML } from '../serialize';
-import { AssetManifestBuilder } from '../util/asset-manifest-builder';
-import { publishAssets } from '../util/asset-publishing';
-import { contentHash } from '../util/content-hash';
 import { ISDK, SdkProvider } from './aws-auth';
 import { CfnEvaluationException } from './evaluate-cloudformation-template';
-import { tryHotswapDeployment } from './hotswap-deployments';
 import { HotswapMode, ICON } from './hotswap/common';
+import { tryHotswapDeployment } from './hotswap-deployments';
 import { ToolkitInfo } from './toolkit-info';
 import {
   changeSetHasNoChanges, CloudFormationStack, TemplateParameters, waitForChangeSet,
   waitForStackDeploy, waitForStackDelete, ParameterValues, ParameterChanges, ResourcesToImport,
 } from './util/cloudformation';
 import { StackActivityMonitor, StackActivityProgress } from './util/cloudformation/stack-activity-monitor';
+import { addMetadataAssetsToManifest } from '../assets';
+import { default as AWS } from '../aws-sdk';
+import { Tag } from '../cdk-toolkit';
+import { debug, error, print } from '../logging';
+import { toYAML } from '../serialize';
+import { AssetManifestBuilder } from '../util/asset-manifest-builder';
+import { publishAssets } from '../util/asset-publishing';
+import { contentHash } from '../util/content-hash';
 
 type TemplateBodyParameter = {
   TemplateBody?: string
@@ -330,13 +330,13 @@ export async function deployStack(options: DeployStackOptions): Promise<DeploySt
 }
 
 type CommonPrepareOptions =
-  & keyof CloudFormation.CreateStackInput
-  & keyof CloudFormation.UpdateStackInput
-  & keyof CloudFormation.CreateChangeSetInput;
+  & keyof AWS.CloudFormation.CreateStackInput
+  & keyof AWS.CloudFormation.UpdateStackInput
+  & keyof AWS.CloudFormation.CreateChangeSetInput;
 type CommonExecuteOptions =
-  & keyof CloudFormation.CreateStackInput
-  & keyof CloudFormation.UpdateStackInput
-  & keyof CloudFormation.ExecuteChangeSetInput;
+  & keyof AWS.CloudFormation.CreateStackInput
+  & keyof AWS.CloudFormation.UpdateStackInput
+  & keyof AWS.CloudFormation.ExecuteChangeSetInput;
 
 /**
  * This class shares state and functionality between the different full deployment modes
@@ -422,7 +422,7 @@ class FullCloudFormationDeployment {
     return waitForChangeSet(this.cfn, this.stackName, changeSetName, { fetchAll: willExecute });
   }
 
-  private async executeChangeSet(changeSet: CloudFormation.DescribeChangeSetOutput): Promise<DeployStackResult> {
+  private async executeChangeSet(changeSet: AWS.CloudFormation.DescribeChangeSetOutput): Promise<DeployStackResult> {
     debug('Initiating execution of changeset %s on stack %s', changeSet.ChangeSetId, this.stackName);
 
     await this.cfn.executeChangeSet({
@@ -520,7 +520,7 @@ class FullCloudFormationDeployment {
   /**
    * Return the options that are shared between CreateStack, UpdateStack and CreateChangeSet
    */
-  private commonPrepareOptions(): Partial<Pick<CloudFormation.UpdateStackInput, CommonPrepareOptions>> {
+  private commonPrepareOptions(): Partial<Pick<AWS.CloudFormation.UpdateStackInput, CommonPrepareOptions>> {
     return {
       Capabilities: ['CAPABILITY_IAM', 'CAPABILITY_NAMED_IAM', 'CAPABILITY_AUTO_EXPAND'],
       NotificationARNs: this.options.notificationArns,
@@ -538,7 +538,7 @@ class FullCloudFormationDeployment {
    * Be careful not to add in keys for options that aren't used, as the features may not have been
    * deployed everywhere yet.
    */
-  private commonExecuteOptions(): Partial<Pick<CloudFormation.UpdateStackInput, CommonExecuteOptions>> {
+  private commonExecuteOptions(): Partial<Pick<AWS.CloudFormation.UpdateStackInput, CommonExecuteOptions>> {
     const shouldDisableRollback = this.options.rollback === false;
 
     return {

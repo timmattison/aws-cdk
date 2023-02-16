@@ -1,4 +1,4 @@
-import * as aws from 'aws-sdk';
+import { default as aws } from '../../aws-sdk';
 
 export enum Mode {
   ForReading,

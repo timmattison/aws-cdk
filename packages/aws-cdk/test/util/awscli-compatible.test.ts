@@ -1,5 +1,5 @@
-import * as AWS from 'aws-sdk';
 import { AwsCliCompatible } from '../../lib/api/aws-auth/awscli-compatible';
+import { default as AWS } from '../../lib/aws-sdk';
 import { withMockedClassSingleton } from '../util';
 
 beforeEach(() => {

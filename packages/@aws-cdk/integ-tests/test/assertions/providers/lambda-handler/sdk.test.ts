@@ -1,5 +1,5 @@
 // Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-import * as SDK from 'aws-sdk';
+import { SDK } from '@aws-cdk/core';
 import * as AWS from 'aws-sdk-mock';
 import * as sinon from 'sinon';
 import { AwsApiCallRequest, AwsApiCallResult } from '../../../../lib/assertions';

@@ -1,16 +1,13 @@
 /* istanbul ignore file */
 import * as https from 'https';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import * as AWS from 'aws-sdk';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import type { ConfigurationOptions } from 'aws-sdk/lib/config-base';
+import { SDK as AWS } from '@aws-cdk/core';
 
 const FRAMEWORK_HANDLER_TIMEOUT = 900000; // 15 minutes
 
 // In order to honor the overall maximum timeout set for the target process,
 // the default 2 minutes from AWS SDK has to be overriden:
 // https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Config.html#httpOptions-property
-const awsSdkConfig: ConfigurationOptions = {
+const awsSdkConfig: AWS.ConfigurationOptions = {
   httpOptions: { timeout: FRAMEWORK_HANDLER_TIMEOUT },
 };
 

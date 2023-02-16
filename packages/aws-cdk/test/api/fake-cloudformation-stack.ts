@@ -1,5 +1,5 @@
-import { CloudFormation } from 'aws-sdk';
 import { CloudFormationStack, Template } from '../../lib/api/util/cloudformation';
+import { default as AWS } from '../../lib/aws-sdk';
 import { instanceMockFrom } from '../util';
 
 export interface FakeCloudFormationStackProps {
@@ -8,12 +8,12 @@ export interface FakeCloudFormationStackProps {
 }
 
 export class FakeCloudformationStack extends CloudFormationStack {
-  public readonly cfnMock: jest.Mocked<CloudFormation>;
+  public readonly cfnMock: jest.Mocked<AWS.CloudFormation>;
   private readonly props: FakeCloudFormationStackProps;
   private __template: Template;
 
   public constructor(props: FakeCloudFormationStackProps) {
-    const cfnMock = instanceMockFrom(CloudFormation);
+    const cfnMock = instanceMockFrom(AWS.CloudFormation);
     super(cfnMock, props.stackName);
     this.cfnMock = cfnMock;
     this.props = props;

@@ -1,5 +1,5 @@
-import * as aws from 'aws-sdk';
 import * as AWS from 'aws-sdk-mock';
+import { default as aws } from '../../lib/aws-sdk';
 import { hasAllTrafficEgress, SecurityGroupContextProviderPlugin } from '../../lib/context-providers/security-groups';
 import { MockSdkProvider } from '../util/mock-sdk';
 

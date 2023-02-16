@@ -1,5 +1,5 @@
-import * as AWS from 'aws-sdk';
 import { LazyListStackResources } from '../../lib/api/evaluate-cloudformation-template';
+import { default as AWS } from '../../lib/aws-sdk';
 import { MockSdk } from '../util/mock-sdk';
 
 describe('Lazy ListStackResources', () => {

@@ -1,3 +1,5 @@
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable @typescript-eslint/no-require-imports */
 /* eslint-disable no-console */
 import { execSync } from 'child_process';
 import * as fs from 'fs';
@@ -6,7 +8,7 @@ import { join } from 'path';
 // which is globally available in the Lambda runtime,
 // as otherwise linking this repository with link-all.sh
 // fails in the CDK app executed with ts-node
-/* eslint-disable-next-line import/no-extraneous-dependencies,import/no-unresolved */
+// eslint-disable-next-line import/no-unresolved
 import * as AWSLambda from 'aws-lambda';
 import { AwsSdkCall } from '../aws-custom-resource';
 
@@ -85,6 +87,7 @@ const patchedServices: { serviceName: string; apiVersions: string[] }[] = [];
  * Patches the AWS SDK by loading service models in the same manner as the actual SDK
  */
 function patchSdk(awsSdk: any): any {
+  require('aws-sdk/lib/maintenance_mode_message').suppress = true;
   const apiLoader = awsSdk.apiLoader;
   patchedServices.forEach(({ serviceName, apiVersions }) => {
     const lowerServiceName = serviceName.toLowerCase();
@@ -110,7 +113,6 @@ function patchSdk(awsSdk: any): any {
   return awsSdk;
 }
 
-/* eslint-disable @typescript-eslint/no-require-imports, import/no-extraneous-dependencies */
 export async function handler(event: AWSLambda.CloudFormationCustomResourceEvent, context: AWSLambda.Context) {
   try {
     let AWS: any;

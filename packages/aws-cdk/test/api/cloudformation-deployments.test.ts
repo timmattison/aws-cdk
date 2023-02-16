@@ -6,21 +6,21 @@ import * as os from 'os';
 import * as path from 'path';
 import * as cxschema from '@aws-cdk/cloud-assembly-schema';
 import * as cxapi from '@aws-cdk/cx-api';
-import { CloudFormation } from 'aws-sdk';
+import { FakeCloudformationStack } from './fake-cloudformation-stack';
 import { CloudFormationDeployments } from '../../lib/api/cloudformation-deployments';
 import { deployStack } from '../../lib/api/deploy-stack';
+import { HotswapMode } from '../../lib/api/hotswap/common';
 import { EcrRepositoryInfo, ToolkitInfo } from '../../lib/api/toolkit-info';
 import { CloudFormationStack } from '../../lib/api/util/cloudformation';
+import { default as AWS } from '../../lib/aws-sdk';
 import { buildAssets, publishAssets } from '../../lib/util/asset-publishing';
 import { testStack } from '../util';
 import { mockBootstrapStack, MockSdkProvider } from '../util/mock-sdk';
-import { FakeCloudformationStack } from './fake-cloudformation-stack';
-import { HotswapMode } from '../../lib/api/hotswap/common';
 
 let sdkProvider: MockSdkProvider;
 let deployments: CloudFormationDeployments;
 let mockToolkitInfoLookup: jest.Mock;
-let currentCfnStackResources: { [key: string]: CloudFormation.StackResourceSummary[] };
+let currentCfnStackResources: { [key: string]: AWS.CloudFormation.StackResourceSummary[] };
 let numberOfTimesListStackResourcesWasCalled: number;
 beforeEach(() => {
   jest.resetAllMocks();
@@ -908,7 +908,7 @@ test('building assets', async () => {
   expect(buildAssets).toBeCalledWith(expectedAssetManifest, sdkProvider, expectedEnvironment, undefined);
 });
 
-function pushStackResourceSummaries(stackName: string, ...items: CloudFormation.StackResourceSummary[]) {
+function pushStackResourceSummaries(stackName: string, ...items: AWS.CloudFormation.StackResourceSummary[]) {
   if (!currentCfnStackResources[stackName]) {
     currentCfnStackResources[stackName] = [];
   }
@@ -916,7 +916,7 @@ function pushStackResourceSummaries(stackName: string, ...items: CloudFormation.
   currentCfnStackResources[stackName].push(...items);
 }
 
-function stackSummaryOf(logicalId: string, resourceType: string, physicalResourceId: string): CloudFormation.StackResourceSummary {
+function stackSummaryOf(logicalId: string, resourceType: string, physicalResourceId: string): AWS.CloudFormation.StackResourceSummary {
   return {
     LogicalResourceId: logicalId,
     PhysicalResourceId: physicalResourceId,

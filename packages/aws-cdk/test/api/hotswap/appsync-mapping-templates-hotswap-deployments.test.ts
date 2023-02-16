@@ -1,10 +1,10 @@
-import { AppSync } from 'aws-sdk';
-import { HotswapMode } from '../../../lib/api/hotswap/common';
 import * as setup from './hotswap-test-setup';
+import { HotswapMode } from '../../../lib/api/hotswap/common';
+import { default as AWS } from '../../../lib/aws-sdk';
 
 let hotswapMockSdkProvider: setup.HotswapMockSdkProvider;
-let mockUpdateResolver: (params: AppSync.UpdateResolverRequest) => AppSync.UpdateResolverResponse;
-let mockUpdateFunction: (params: AppSync.UpdateFunctionRequest) => AppSync.UpdateFunctionResponse;
+let mockUpdateResolver: (params: AWS.AppSync.UpdateResolverRequest) => AWS.AppSync.UpdateResolverResponse;
+let mockUpdateFunction: (params: AWS.AppSync.UpdateFunctionRequest) => AWS.AppSync.UpdateFunctionResponse;
 
 beforeEach(() => {
   hotswapMockSdkProvider = setup.setupHotswapTests();

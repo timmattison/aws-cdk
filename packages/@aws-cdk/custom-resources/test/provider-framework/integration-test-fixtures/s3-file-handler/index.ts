@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import * as AWS from 'aws-sdk';
+import { SDK as AWS } from '@aws-cdk/core';
 import * as api from './api';
 
 const s3 = new AWS.S3();

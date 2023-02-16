@@ -3,7 +3,7 @@
 // These unit tests are here to confirm the non-public elements are present and working as expected,
 // and do not get changed in a new version of the aws-sdk package
 
-import * as AWS from 'aws-sdk';
+import { default as AWS } from '../lib/aws-sdk';
 
 let ecsService: AWS.ECS;
 beforeEach(() => {

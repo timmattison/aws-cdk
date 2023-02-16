@@ -1,4 +1,4 @@
-import * as aws from 'aws-sdk';
+import { SDK as AWS } from '@aws-cdk/core';
 import { invokeFunction } from '../../lib/provider-framework/runtime/outbound';
 
 jest.mock('aws-sdk', () => {
@@ -15,9 +15,9 @@ jest.mock('aws-sdk', () => {
   };
 });
 
-let mockInvoke: () => Promise<aws.Lambda.InvocationResponse>;
+let mockInvoke: () => Promise<AWS.Lambda.InvocationResponse>;
 
-const req: aws.Lambda.InvocationRequest = {
+const req: AWS.Lambda.InvocationRequest = {
   FunctionName: 'Whatever',
   Payload: {
     IsThisATest: 'Yes, this is a test',
@@ -29,7 +29,7 @@ let invokeCount: number = 0;
 let expectedFunctionStates: string[] = [];
 let receivedFunctionStates: string[] = [];
 
-const mockWaitFor = async (): Promise<aws.Lambda.GetFunctionResponse> => {
+const mockWaitFor = async (): Promise<AWS.Lambda.GetFunctionResponse> => {
   let state = expectedFunctionStates.pop();
   while (state !== 'Active') {
     receivedFunctionStates.push(state!);

@@ -1,6 +1,5 @@
 /*eslint-disable no-console*/
-/* eslint-disable import/no-extraneous-dependencies */
-import { SSM } from 'aws-sdk';
+import { SDK as AWS } from '../../../aws-sdk';
 import { ExportReaderCRProps, CrossRegionExports } from '../types';
 
 export async function handler(event: AWSLambda.CloudFormationCustomResourceEvent) {
@@ -9,7 +8,7 @@ export async function handler(event: AWSLambda.CloudFormationCustomResourceEvent
   const importNames = Object.keys(imports);
   const keyName: string = `aws-cdk:strong-ref:${props.prefix}`;
 
-  const ssm = new SSM({ region: props.region });
+  const ssm = new AWS.SSM({ region: props.region });
   try {
     switch (event.RequestType) {
       case 'Create':
@@ -45,7 +44,7 @@ export async function handler(event: AWSLambda.CloudFormationCustomResourceEvent
 /**
  * Add tag to parameters for existing exports
  */
-async function addTags(ssm: SSM, parameters: string[], keyName: string): Promise<void> {
+async function addTags(ssm: AWS.SSM, parameters: string[], keyName: string): Promise<void> {
   await Promise.all(parameters.map(async name => {
     try {
       return await ssm.addTagsToResource({
@@ -65,7 +64,7 @@ async function addTags(ssm: SSM, parameters: string[], keyName: string): Promise
 /**
  * Remove tags from parameters
  */
-async function removeTags(ssm: SSM, parameters: string[], keyName: string): Promise<void> {
+async function removeTags(ssm: AWS.SSM, parameters: string[], keyName: string): Promise<void> {
   await Promise.all(parameters.map(async name => {
     try {
       return await ssm.removeTagsFromResource({

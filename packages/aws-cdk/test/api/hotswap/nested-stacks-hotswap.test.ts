@@ -1,10 +1,10 @@
-import { Lambda } from 'aws-sdk';
-import { HotswapMode } from '../../../lib/api/hotswap/common';
-import { testStack } from '../../util';
 import * as setup from './hotswap-test-setup';
+import { HotswapMode } from '../../../lib/api/hotswap/common';
+import { default as AWS } from '../../../lib/aws-sdk';
+import { testStack } from '../../util';
 
-let mockUpdateLambdaCode: (params: Lambda.Types.UpdateFunctionCodeRequest) => Lambda.Types.FunctionConfiguration;
-let mockPublishVersion: jest.Mock<Lambda.FunctionConfiguration, Lambda.PublishVersionRequest[]>;
+let mockUpdateLambdaCode: (params: AWS.Lambda.Types.UpdateFunctionCodeRequest) => AWS.Lambda.Types.FunctionConfiguration;
+let mockPublishVersion: jest.Mock<AWS.Lambda.FunctionConfiguration, AWS.Lambda.PublishVersionRequest[]>;
 let hotswapMockSdkProvider: setup.HotswapMockSdkProvider;
 
 // TODO: more tests for parent vs child containing hotswappable changes

@@ -1,6 +1,6 @@
 import * as cxapi from '@aws-cdk/cx-api';
-import { CloudFormation } from 'aws-sdk';
 import { findCloudWatchLogGroups } from '../../../lib/api/logs/find-cloudwatch-logs';
+import { default as AWS } from '../../../lib/aws-sdk';
 import { testStack, TestStackArtifact } from '../../util';
 import { MockSdkProvider } from '../../util/mock-sdk';
 
@@ -251,13 +251,13 @@ test('log groups without physical names are added', async () => {
 });
 
 const STACK_NAME = 'withouterrors';
-const currentCfnStackResources: CloudFormation.StackResourceSummary[] = [];
+const currentCfnStackResources: AWS.CloudFormation.StackResourceSummary[] = [];
 
-function pushStackResourceSummaries(...items: CloudFormation.StackResourceSummary[]) {
+function pushStackResourceSummaries(...items: AWS.CloudFormation.StackResourceSummary[]) {
   currentCfnStackResources.push(...items);
 }
 
-function stackSummaryOf(logicalId: string, resourceType: string, physicalResourceId: string): CloudFormation.StackResourceSummary {
+function stackSummaryOf(logicalId: string, resourceType: string, physicalResourceId: string): AWS.CloudFormation.StackResourceSummary {
   return {
     LogicalResourceId: logicalId,
     PhysicalResourceId: physicalResourceId,

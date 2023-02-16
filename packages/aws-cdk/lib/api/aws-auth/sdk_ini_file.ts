@@ -7,8 +7,8 @@
 
 import * as os from 'os';
 import * as path from 'path';
-import * as AWS from 'aws-sdk';
 import * as fs from 'fs-extra';
+import { default as AWS } from '../../aws-sdk';
 
 export interface SharedIniFileOptions {
   isConfig?: boolean;

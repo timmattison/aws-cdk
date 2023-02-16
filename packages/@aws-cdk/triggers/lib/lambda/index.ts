@@ -1,7 +1,5 @@
 /* eslint-disable no-console */
-
-// eslint-disable-next-line import/no-extraneous-dependencies
-import * as AWS from 'aws-sdk';
+import { SDK as AWS } from '@aws-cdk/core';
 
 export type InvokeFunction = (functionName: string) => Promise<AWS.Lambda.InvocationResponse>;
 

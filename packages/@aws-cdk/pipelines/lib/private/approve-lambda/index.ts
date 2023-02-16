@@ -1,5 +1,4 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import * as AWS from 'aws-sdk';
+import { SDK as AWS } from '@aws-cdk/core';
 
 const client = new AWS.CodePipeline({ apiVersion: '2015-07-09' });
 const TIMEOUT_IN_MINUTES = 5;

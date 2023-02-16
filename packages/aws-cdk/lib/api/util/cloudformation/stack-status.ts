@@ -1,4 +1,4 @@
-import * as AWS from 'aws-sdk';
+import { default as AWS } from '../../../aws-sdk';
 
 /**
  * A utility class to inspect CloudFormation stack statuses.

@@ -1,5 +1,5 @@
-import * as AWS from 'aws-sdk';
 import { ISDK } from './aws-auth';
+import { default as AWS } from '../aws-sdk';
 
 export interface ListStackResources {
   listStackResources(): Promise<AWS.CloudFormation.StackResourceSummary[]>;

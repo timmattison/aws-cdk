@@ -1,15 +1,14 @@
 import * as os from 'os';
 import * as cxapi from '@aws-cdk/cx-api';
-import * as AWS from 'aws-sdk';
-import type { ConfigurationOptions } from 'aws-sdk/lib/config-base';
 import * as promptly from 'promptly';
 import * as uuid from 'uuid';
+import { FakeSts, RegisterRoleOptions, RegisterUserOptions } from './fake-sts';
 import { ISDK, Mode, SDK, SdkProvider } from '../../lib/api/aws-auth';
 import { PluginHost } from '../../lib/api/plugin';
+import { default as AWS, ConfigurationOptions } from '../../lib/aws-sdk';
 import * as logging from '../../lib/logging';
 import * as bockfs from '../bockfs';
 import { withMocked } from '../util';
-import { FakeSts, RegisterRoleOptions, RegisterUserOptions } from './fake-sts';
 
 jest.mock('promptly', () => ({
   prompt: jest.fn().mockResolvedValue('1234'),

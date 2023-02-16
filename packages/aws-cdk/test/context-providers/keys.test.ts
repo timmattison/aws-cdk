@@ -1,5 +1,5 @@
-import * as aws from 'aws-sdk';
 import * as AWS from 'aws-sdk-mock';
+import { default as aws } from '../../lib/aws-sdk';
 import { KeyContextProviderPlugin } from '../../lib/context-providers/keys';
 import { MockSdkProvider } from '../util/mock-sdk';
 

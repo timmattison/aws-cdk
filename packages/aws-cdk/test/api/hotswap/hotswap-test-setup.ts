@@ -1,12 +1,9 @@
 import * as cxapi from '@aws-cdk/cx-api';
-import * as AWS from 'aws-sdk';
-import * as codebuild from 'aws-sdk/clients/codebuild';
-import * as lambda from 'aws-sdk/clients/lambda';
-import * as stepfunctions from 'aws-sdk/clients/stepfunctions';
 import { DeployStackResult } from '../../../lib/api';
-import * as deployments from '../../../lib/api/hotswap-deployments';
 import { HotswapMode } from '../../../lib/api/hotswap/common';
+import * as deployments from '../../../lib/api/hotswap-deployments';
 import { CloudFormationStack, Template } from '../../../lib/api/util/cloudformation';
+import { default as AWS, codebuild, lambda, stepfunctions } from '../../../lib/aws-sdk';
 import { testStack, TestStackArtifact } from '../../util';
 import { MockSdkProvider, SyncHandlerSubsetOf } from '../../util/mock-sdk';
 import { FakeCloudformationStack } from '../fake-cloudformation-stack';

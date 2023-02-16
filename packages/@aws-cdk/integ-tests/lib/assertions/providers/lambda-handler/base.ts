@@ -1,8 +1,7 @@
 /* eslint-disable no-console */
 import * as https from 'https';
 import * as url from 'url';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import * as AWS from 'aws-sdk';
+import { SDK as AWS } from '@aws-cdk/core';
 
 interface HandlerResponse {
   readonly status: 'SUCCESS' | 'FAILED';

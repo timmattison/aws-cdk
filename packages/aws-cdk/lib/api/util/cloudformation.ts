@@ -1,8 +1,8 @@
 import { SSMPARAM_NO_INVALIDATE } from '@aws-cdk/cx-api';
-import { CloudFormation } from 'aws-sdk';
+import { StackStatus } from './cloudformation/stack-status';
+import { default as AWS } from '../../aws-sdk';
 import { debug } from '../../logging';
 import { deserializeStructure } from '../../serialize';
-import { StackStatus } from './cloudformation/stack-status';
 
 export type Template = {
   Parameters?: Record<string, TemplateParameter>;
@@ -16,9 +16,9 @@ interface TemplateParameter {
   [key: string]: any;
 }
 
-export type ResourceIdentifierProperties = CloudFormation.ResourceIdentifierProperties;
-export type ResourceIdentifierSummaries = CloudFormation.ResourceIdentifierSummaries;
-export type ResourcesToImport = CloudFormation.ResourcesToImport;
+export type ResourceIdentifierProperties = AWS.CloudFormation.ResourceIdentifierProperties;
+export type ResourceIdentifierSummaries = AWS.CloudFormation.ResourceIdentifierSummaries;
+export type ResourcesToImport = AWS.CloudFormation.ResourcesToImport;
 
 /**
  * Represents an (existing) Stack in CloudFormation
@@ -28,7 +28,7 @@ export type ResourcesToImport = CloudFormation.ResourcesToImport;
  */
 export class CloudFormationStack {
   public static async lookup(
-    cfn: CloudFormation, stackName: string, retrieveProcessedTemplate: boolean = false,
+    cfn: AWS.CloudFormation, stackName: string, retrieveProcessedTemplate: boolean = false,
   ): Promise<CloudFormationStack> {
     try {
       const response = await cfn.describeStacks({ StackName: stackName }).promise();
@@ -46,21 +46,21 @@ export class CloudFormationStack {
    *
    * It's a little silly that it needs arguments to do that, but there we go.
    */
-  public static doesNotExist(cfn: CloudFormation, stackName: string) {
+  public static doesNotExist(cfn: AWS.CloudFormation, stackName: string) {
     return new CloudFormationStack(cfn, stackName);
   }
 
   /**
    * From static information (for testing)
    */
-  public static fromStaticInformation(cfn: CloudFormation, stackName: string, stack: CloudFormation.Stack) {
+  public static fromStaticInformation(cfn: AWS.CloudFormation, stackName: string, stack: AWS.CloudFormation.Stack) {
     return new CloudFormationStack(cfn, stackName, stack);
   }
 
   private _template: any;
 
   protected constructor(
-    private readonly cfn: CloudFormation, public readonly stackName: string, private readonly stack?: CloudFormation.Stack,
+    private readonly cfn: AWS.CloudFormation, public readonly stackName: string, private readonly stack?: AWS.CloudFormation.Stack,
     private readonly retrieveProcessedTemplate: boolean = false,
   ) {
   }
@@ -134,7 +134,7 @@ export class CloudFormationStack {
    *
    * Empty list of the stack does not exist
    */
-  public get tags(): CloudFormation.Tags {
+  public get tags(): AWS.CloudFormation.Tags {
     return this.stack?.Tags || [];
   }
 
@@ -186,11 +186,11 @@ export class CloudFormationStack {
  * @returns       CloudFormation information about the ChangeSet
  */
 async function describeChangeSet(
-  cfn: CloudFormation,
+  cfn: AWS.CloudFormation,
   stackName: string,
   changeSetName: string,
   { fetchAll }: { fetchAll: boolean },
-): Promise<CloudFormation.DescribeChangeSetOutput> {
+): Promise<AWS.CloudFormation.DescribeChangeSetOutput> {
   const response = await cfn.describeChangeSet({ StackName: stackName, ChangeSetName: changeSetName }).promise();
 
   // If fetchAll is true, traverse all pages from the change set description.
@@ -250,11 +250,11 @@ async function waitFor<T>(valueProvider: () => Promise<T | null | undefined>, ti
  */
 // eslint-disable-next-line max-len
 export async function waitForChangeSet(
-  cfn: CloudFormation,
+  cfn: AWS.CloudFormation,
   stackName: string,
   changeSetName: string,
   { fetchAll }: { fetchAll: boolean },
-): Promise<CloudFormation.DescribeChangeSetOutput> {
+): Promise<AWS.CloudFormation.DescribeChangeSetOutput> {
   debug('Waiting for changeset %s on stack %s to finish creating...', changeSetName, stackName);
   const ret = await waitFor(async () => {
     const description = await describeChangeSet(cfn, stackName, changeSetName, { fetchAll });
@@ -287,7 +287,7 @@ export async function waitForChangeSet(
  * object; the latter can be empty because no resources were changed, but if
  * there are changes to Outputs, the change set can still be executed.
  */
-export function changeSetHasNoChanges(description: CloudFormation.DescribeChangeSetOutput) {
+export function changeSetHasNoChanges(description: AWS.CloudFormation.DescribeChangeSetOutput) {
   const noChangeErrorPrefixes = [
     // Error message for a regular template
     'The submitted information didn\'t contain changes.',
@@ -312,7 +312,7 @@ export function changeSetHasNoChanges(description: CloudFormation.DescribeChange
  * @returns     the CloudFormation description of the stabilized stack after the delete attempt
  */
 export async function waitForStackDelete(
-  cfn: CloudFormation,
+  cfn: AWS.CloudFormation,
   stackName: string): Promise<CloudFormationStack | undefined> {
 
   const stack = await stabilizeStack(cfn, stackName);
@@ -339,7 +339,7 @@ export async function waitForStackDelete(
  * @returns     the CloudFormation description of the stabilized stack after the update attempt
  */
 export async function waitForStackDeploy(
-  cfn: CloudFormation,
+  cfn: AWS.CloudFormation,
   stackName: string): Promise<CloudFormationStack | undefined> {
 
   const stack = await stabilizeStack(cfn, stackName);
@@ -359,7 +359,7 @@ export async function waitForStackDeploy(
 /**
  * Wait for a stack to become stable (no longer _IN_PROGRESS), returning it
  */
-export async function stabilizeStack(cfn: CloudFormation, stackName: string) {
+export async function stabilizeStack(cfn: AWS.CloudFormation, stackName: string) {
   debug('Waiting for stack %s to finish creating or updating...', stackName);
   return waitFor(async () => {
     const stack = await CloudFormationStack.lookup(cfn, stackName);
@@ -424,7 +424,7 @@ export class TemplateParameters {
  */
 export class ParameterValues {
   public readonly values: Record<string, string> = {};
-  public readonly apiParameters: CloudFormation.Parameter[] = [];
+  public readonly apiParameters: AWS.CloudFormation.Parameter[] = [];
 
   constructor(
     private readonly formalParams: Record<string, TemplateParameter>,

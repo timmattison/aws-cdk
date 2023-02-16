@@ -1,10 +1,10 @@
-import { Lambda } from 'aws-sdk';
-import { HotswapMode } from '../../../lib/api/hotswap/common';
 import * as setup from './hotswap-test-setup';
+import { HotswapMode } from '../../../lib/api/hotswap/common';
+import { default as AWS } from '../../../lib/aws-sdk';
 
-let mockUpdateLambdaCode: (params: Lambda.Types.UpdateFunctionCodeRequest) => Lambda.Types.FunctionConfiguration;
-let mockPublishVersion: jest.Mock<Lambda.FunctionConfiguration, Lambda.PublishVersionRequest[]>;
-let mockUpdateAlias: (params: Lambda.UpdateAliasRequest) => Lambda.AliasConfiguration;
+let mockUpdateLambdaCode: (params: AWS.Lambda.Types.UpdateFunctionCodeRequest) => AWS.Lambda.Types.FunctionConfiguration;
+let mockPublishVersion: jest.Mock<AWS.Lambda.FunctionConfiguration, AWS.Lambda.PublishVersionRequest[]>;
+let mockUpdateAlias: (params: AWS.Lambda.UpdateAliasRequest) => AWS.Lambda.AliasConfiguration;
 let hotswapMockSdkProvider: setup.HotswapMockSdkProvider;
 
 beforeEach(() => {

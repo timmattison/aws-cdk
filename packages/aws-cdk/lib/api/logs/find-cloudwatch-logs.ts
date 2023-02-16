@@ -1,5 +1,5 @@
 import * as cxapi from '@aws-cdk/cx-api';
-import { CloudFormation } from 'aws-sdk';
+import { default as AWS } from '../../aws-sdk';
 import { Mode, SdkProvider, ISDK } from '../aws-auth';
 import { prepareSdkWithLookupRoleFor } from '../cloudformation-deployments';
 import { EvaluateCloudFormationTemplate, LazyListStackResources } from '../evaluate-cloudformation-template';
@@ -80,7 +80,7 @@ export async function findCloudWatchLogGroups(
  * with an ignored resource
  */
 function isReferencedFromIgnoredResource(
-  logGroupResource: CloudFormation.StackResourceSummary,
+  logGroupResource: AWS.CloudFormation.StackResourceSummary,
   evaluateCfnTemplate: EvaluateCloudFormationTemplate,
 ): boolean {
   let foundReference = false;
@@ -99,7 +99,7 @@ function isReferencedFromIgnoredResource(
  * as well as Log Groups created implicitely (i.e. Lambda Functions)
  */
 function findAllLogGroupNames(
-  stackResources: CloudFormation.StackResourceSummary[],
+  stackResources: AWS.CloudFormation.StackResourceSummary[],
   evaluateCfnTemplate: EvaluateCloudFormationTemplate,
 ): string[] {
   return stackResources.reduce((logGroupNames: string[], resource) => {

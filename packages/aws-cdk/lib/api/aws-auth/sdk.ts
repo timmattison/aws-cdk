@@ -1,20 +1,15 @@
-import * as AWS from 'aws-sdk';
-import type { ConfigurationOptions } from 'aws-sdk/lib/config-base';
-import { traceMethods } from '../../util/tracing';
 import { debug, trace } from './_env';
 import { AccountAccessKeyCache } from './account-cache';
 import { cached } from './cached';
 import { Account } from './sdk-provider';
+import { default as AWS, regionUtil } from '../../aws-sdk';
+import { traceMethods } from '../../util/tracing';
 
 // We need to map regions to domain suffixes, and the SDK already has a function to do this.
 // It's not part of the public API, but it's also unlikely to go away.
 //
 // Reuse that function, and add a safety check, so we don't accidentally break if they ever
 // refactor that away.
-
-/* eslint-disable @typescript-eslint/no-require-imports */
-const regionUtil = require('aws-sdk/lib/region_config');
-/* eslint-enable @typescript-eslint/no-require-imports */
 
 if (!regionUtil.getEndpointSuffix) {
   throw new Error('This version of AWS SDK for JS does not have the \'getEndpointSuffix\' function!');
@@ -89,7 +84,7 @@ export class SDK implements ISDK {
 
   public readonly currentRegion: string;
 
-  private readonly config: ConfigurationOptions;
+  private readonly config: AWS.ConfigurationOptions;
 
   /**
    * Default retry options for SDK clients.
@@ -121,7 +116,7 @@ export class SDK implements ISDK {
   constructor(
     private readonly _credentials: AWS.Credentials,
     region: string,
-    httpOptions: ConfigurationOptions = {},
+    httpOptions: AWS.ConfigurationOptions = {},
     private readonly sdkOptions: SdkOptions = {}) {
 
     this.config = {

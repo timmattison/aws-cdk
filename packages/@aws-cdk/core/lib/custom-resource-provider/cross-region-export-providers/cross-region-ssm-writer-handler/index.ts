@@ -1,13 +1,12 @@
 /*eslint-disable no-console*/
-/* eslint-disable import/no-extraneous-dependencies */
-import { SSM } from 'aws-sdk';
+import { SDK as AWS } from '../../../aws-sdk';
 import { CrossRegionExports, ExportWriterCRProps } from '../types';
 
 export async function handler(event: AWSLambda.CloudFormationCustomResourceEvent) {
   const props: ExportWriterCRProps = event.ResourceProperties.WriterProps;
   const exports = props.exports as CrossRegionExports;
 
-  const ssm = new SSM({ region: props.region });
+  const ssm = new AWS.SSM({ region: props.region });
   try {
     switch (event.RequestType) {
       case 'Create':
@@ -64,7 +63,7 @@ export async function handler(event: AWSLambda.CloudFormationCustomResourceEvent
 /**
  * Create parameters for existing exports
  */
-async function putParameters(ssm: SSM, parameters: CrossRegionExports): Promise<void> {
+async function putParameters(ssm: AWS.SSM, parameters: CrossRegionExports): Promise<void> {
   await Promise.all(Array.from(Object.entries(parameters), ([name, value]) => {
     return ssm.putParameter({
       Name: name,
@@ -77,7 +76,7 @@ async function putParameters(ssm: SSM, parameters: CrossRegionExports): Promise<
 /**
  * Query for existing parameters that are in use
  */
-async function throwIfAnyInUse(ssm: SSM, parameters: CrossRegionExports): Promise<void> {
+async function throwIfAnyInUse(ssm: AWS.SSM, parameters: CrossRegionExports): Promise<void> {
   const tagResults: Map<string, Set<string>> = new Map();
   await Promise.all(Object.keys(parameters).map(async (name: string) => {
     const result = await isInUse(ssm, name);
@@ -97,7 +96,7 @@ async function throwIfAnyInUse(ssm: SSM, parameters: CrossRegionExports): Promis
 /**
  * Check if a parameter is in use
  */
-async function isInUse(ssm: SSM, parameterName: string): Promise<Set<string>> {
+async function isInUse(ssm: AWS.SSM, parameterName: string): Promise<Set<string>> {
   const tagResults: Set<string> = new Set();
   try {
     const result = await ssm.listTagsForResource({

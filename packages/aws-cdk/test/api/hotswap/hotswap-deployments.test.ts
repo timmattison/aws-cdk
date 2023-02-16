@@ -1,11 +1,11 @@
-import { Lambda, StepFunctions } from 'aws-sdk';
+import * as setup from './hotswap-test-setup';
 import { CfnEvaluationException } from '../../../lib/api/evaluate-cloudformation-template';
 import { HotswapMode } from '../../../lib/api/hotswap/common';
-import * as setup from './hotswap-test-setup';
+import { default as AWS } from '../../../lib/aws-sdk';
 
 let hotswapMockSdkProvider: setup.HotswapMockSdkProvider;
-let mockUpdateLambdaCode: (params: Lambda.Types.UpdateFunctionCodeRequest) => Lambda.Types.FunctionConfiguration;
-let mockUpdateMachineDefinition: (params: StepFunctions.Types.UpdateStateMachineInput) => StepFunctions.Types.UpdateStateMachineOutput;
+let mockUpdateLambdaCode: (params: AWS.Lambda.Types.UpdateFunctionCodeRequest) => AWS.Lambda.Types.FunctionConfiguration;
+let mockUpdateMachineDefinition: (params: AWS.StepFunctions.Types.UpdateStateMachineInput) => AWS.StepFunctions.Types.UpdateStateMachineOutput;
 let mockGetEndpointSuffix: () => string;
 
 beforeEach(() => {

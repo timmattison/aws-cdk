@@ -67,5 +67,7 @@ export * from './permissions-boundary';
 // WARNING: Should not be exported, but currently is because of a bug. See the
 // class description for more information.
 export * from './private/intrinsic';
+
 export * from './names';
 export * from './time-zone';
+export * from './aws-sdk';

@@ -1,5 +1,5 @@
-import * as aws from 'aws-sdk';
 import * as AWS from 'aws-sdk-mock';
+import { default as aws } from '../../lib/aws-sdk';
 import { VpcNetworkContextProviderPlugin } from '../../lib/context-providers/vpcs';
 import { MockSdkProvider } from '../util/mock-sdk';
 

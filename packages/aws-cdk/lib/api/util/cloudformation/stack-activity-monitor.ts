@@ -1,8 +1,8 @@
 import * as util from 'util';
 import * as cxschema from '@aws-cdk/cloud-assembly-schema';
 import * as cxapi from '@aws-cdk/cx-api';
-import * as aws from 'aws-sdk';
 import * as chalk from 'chalk';
+import { default as aws } from '../../../aws-sdk';
 import { error, logLevel, LogLevel, setLogLevel } from '../../../logging';
 import { RewritableBlock } from '../display';
 

@@ -1,4 +1,4 @@
-import * as SDK from 'aws-sdk';
+import { SDK } from '@aws-cdk/core';
 import * as AWS from 'aws-sdk-mock';
 import * as nock from 'nock';
 import * as sinon from 'sinon';

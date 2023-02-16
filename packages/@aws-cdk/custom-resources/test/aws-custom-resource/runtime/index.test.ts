@@ -1,4 +1,4 @@
-import * as AWS from 'aws-sdk';
+import { SDK as AWS } from '@aws-cdk/core';
 import { PhysicalResourceId } from '../../../lib';
 import { handler } from '../../../lib/aws-custom-resource/runtime/index';
 

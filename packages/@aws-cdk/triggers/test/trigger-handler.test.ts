@@ -1,4 +1,4 @@
-import * as AWS from 'aws-sdk';
+import { SDK as AWS } from '@aws-cdk/core';
 import * as lambda from '../lib/lambda';
 
 afterEach(() => {

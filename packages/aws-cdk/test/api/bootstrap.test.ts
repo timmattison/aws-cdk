@@ -1,6 +1,6 @@
-import { CreateChangeSetInput } from 'aws-sdk/clients/cloudformation';
 import { parse } from 'yaml';
 import { Bootstrapper } from '../../lib/api/bootstrap';
+import { CreateChangeSetInput } from '../../lib/aws-sdk';
 import { deserializeStructure } from '../../lib/serialize';
 import { MockSdkProvider, SyncHandlerSubsetOf } from '../util/mock-sdk';
 

@@ -1,5 +1,5 @@
-import * as aws from 'aws-sdk';
 import * as AWS from 'aws-sdk-mock';
+import { default as aws } from '../../lib/aws-sdk';
 import { AmiContextProviderPlugin } from '../../lib/context-providers/ami';
 import { MockSdkProvider } from '../util/mock-sdk';
 

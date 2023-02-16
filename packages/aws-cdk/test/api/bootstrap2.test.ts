@@ -5,13 +5,13 @@ jest.mock('../../lib/api/deploy-stack', () => ({
   deployStack: mockDeployStack,
 }));
 
-import { IAM } from 'aws-sdk';
 import { Bootstrapper, DeployStackOptions, ToolkitInfo } from '../../lib/api';
+import { default as AWS } from '../../lib/aws-sdk';
 import { mockBootstrapStack, MockSdk, MockSdkProvider } from '../util/mock-sdk';
 
 let bootstrapper: Bootstrapper;
-let mockGetPolicyIamCode: (params: IAM.Types.GetPolicyRequest) => IAM.Types.GetPolicyResponse;
-let mockCreatePolicyIamCode: (params: IAM.Types.CreatePolicyRequest) => IAM.Types.CreatePolicyResponse;
+let mockGetPolicyIamCode: (params: AWS.IAM.Types.GetPolicyRequest) => AWS.IAM.Types.GetPolicyResponse;
+let mockCreatePolicyIamCode: (params: AWS.IAM.Types.CreatePolicyRequest) => AWS.IAM.Types.CreatePolicyResponse;
 
 beforeEach(() => {
   bootstrapper = new Bootstrapper({ source: 'default' });
