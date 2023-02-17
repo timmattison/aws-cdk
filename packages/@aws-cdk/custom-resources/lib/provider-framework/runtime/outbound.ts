@@ -3,9 +3,6 @@
 import * as https from 'https';
 import * as AWS from 'aws-sdk';
 
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-require('aws-sdk/lib/maintenance_mode_message').suppress = true;
-
 
 const FRAMEWORK_HANDLER_TIMEOUT = 900000; // 15 minutes
 
